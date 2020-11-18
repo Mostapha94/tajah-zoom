@@ -11,6 +11,32 @@
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
     <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+<style>
+#iframe_container {
+  background-color: #ffffff;
+  padding: 0;
+  height: 500px;;
+  width: 100%;
+  overflow: visible;
+}
+
+#myiframe {
+  overflow: scroll;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1);
+  -ms-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+}
+
+button {
+  display: inline-block;
+}
+</style>
   </head>
 
   <body class="gray-background rtl">
@@ -18,8 +44,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="well well-sm">
-                    <form class="form-horizontal" method="post" action="{{route('meeting.store')}}">
+                    <form class="form-horizontal" method="post" action="{{route('meeting.update',['id'=>$meeting->id])}}">
                         @csrf
+                        @method('put')
                         <fieldset>
                             <legend class="text-center header">Create meeting</legend>
 
@@ -27,66 +54,43 @@
                                 <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
                                 <div class="col-md-8">
                                     <label>Topic</label>
-                                    <input id="fname" name="topic" type="text" placeholder="Topic" class="form-control">
+                                    <input id="topic" name="topic" value ="{{$meeting->topic}}" type="text" placeholder="Topic" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
                                 <div class="col-md-8">
-                                <label>Start time</label><br>
+                                    <label>type</label>
+                                    <input id="type" name="type" value ="{{$meeting->type}}" type="text" placeholder="Topic" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+                                <div class="col-md-8">
+                                <label>Start time : </label>{{$meeting->start_time}}<br>
                                 <input type="text" id="dtpickerdemo" name="start_time"> <br>
                             </div>
                             <div class="form-group">
                                 <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
                                 <div class="col-md-8">
                                 <label></label><br>
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                             <br>
                         </fieldset>
                     </form>
-                </div>
+                    <div id="iframe_container">
+                    <div class="iframe-container" style="overflow: hidden; padding-top: 56.25%; position: relative;">
+                        <iframe allow="microphone; camera" style="border: 0; height: 100%; left: 0; position: absolute; top: 0; width: 100%;" src="https://success.zoom.us/wc/join/{{$meeting->id}}" frameborder="0"></iframe> </div>
+                    </div>
+                    </div>
             </div>
-        </div>
-        <div class="row responsive-table">
-            <div class="col-12 col-m-12">
-                <table  class="table striped bordered" id="section">
-                    <thead>
-                        <tr class="primary-bg">
-                            <th>{{__('ID')}}</th>
-                            <th>{{__('Topic')}}</th>
-                            <th>{{__('Type')}}</th>
-                            <th>{{__('Join link')}}</th>
-                            <th>{{__('Start time')}}</th>
-                            <th>{{__('Action')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($meetings as $i=>$meeting)
-                    <tr>
-                        <td>{{$meeting->id}}</td>
-                        <td>{{$meeting->topic}}</td>
-                        <td>{{$meeting->type}}</td>
-                        <td>{{$meeting->join_url}}</td>
-                        <td>{{$meeting->start_time}}</td>
-                        <td>
-                        <form action="{{ route('meetings.delete',['id'=>$meeting->id]) }}" method="post">
-                        @csrf
-                        <button type="submit">Delete</button>
-                        </form>
-                        <a href="{{route('meeting.show',['id'=>$meeting->id])}}" class="btn btn-primary">Show<a>
-                        </td>
-                    </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>   
         </div>
     </div>
     <script type="text/javascript">
-            $(function () {
-                $('#dtpickerdemo').datetimepicker();
-            });
+        $(function () {
+            $('#dtpickerdemo').datetimepicker();
+        });
     </script>
   </body>
 </html>

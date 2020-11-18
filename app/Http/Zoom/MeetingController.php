@@ -16,7 +16,7 @@ class MeetingController extends Controller
     public function list(Request $request)
     {
         $user=Zoom::user()->find('mostapha.elsayed94@gmail.com'); // by id or email
-        $meetings=$user->meetings()->all();
+        $meetings=$user->meetings()->where('type','sechduled')->get();
         return view('zoom.add-meeting',compact('meetings'));
     }
     
@@ -61,7 +61,8 @@ class MeetingController extends Controller
     //get
     public function get(Request $request, string $id)
     {
-        return $meeting=Zoom::meeting()->find($id);
+        $meeting=Zoom::meeting()->find($id);
+        return view('zoom.show-meeting',compact('meeting'));
     }
     //update
     public function update(Request $request, string $id)

@@ -25,6 +25,6 @@ Route::get('/create-meeting', 'Zoom\MeetingController@createMeeting');
 Route::post('/meetings', 'Zoom\MeetingController@create')->name('meeting.store');
 
 // Get information of the meeting room by ID.
-Route::get('/meetings/{id}', 'Zoom\MeetingController@get')->where('id', '[0-9]+');
-Route::patch('/meetings/{id}', 'Zoom\MeetingController@update')->where('id', '[0-9]+');
+Route::get('/meetings/{id}', 'Zoom\MeetingController@get')->where('id', '[0-9]+')->name('meeting.show');
+Route::put('/meetings/{id}', 'Zoom\MeetingController@update')->where('id', '[0-9]+')->name('meeting.update');
 Route::post('/delete-meetings/{id}', 'Zoom\MeetingController@delete')->where('id', '[0-9]+')->name('meetings.delete');
